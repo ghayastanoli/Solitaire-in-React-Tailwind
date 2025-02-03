@@ -42,7 +42,7 @@ const NavBar = ({ moves, correctMoves, resetGame }) => {
         <div className="text-xl"> Score: {score}</div>
         <button
           onClick={handleReset}
-          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer"
         >
           Reset Game
         </button>
