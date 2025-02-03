@@ -2,15 +2,14 @@ import React from 'react';
 import { useDroppable } from "@dnd-kit/core";
 import DraggableCard from './DraggableCard';
 
-const CardPile = ({ pile, pileIndex, selectedCards, onSelectCards }) => {
+const CardPile = ({ pile, pileIndex, selectedCards, isDraggingPile, onSelectCards }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: `${pileIndex}`
   });
 
-  const handleCardSelect = (cardIndex) => {
+  const handleCardSelect = (clickedIndex) => {
     const selectedIndexes = [];
-    // Select all cards from the clicked card to the bottom of the pile
-    for (let i = 0; i <= cardIndex; i++) {
+    for (let i = clickedIndex; i < pile.length; i++) {
       if (pile[i].faceUp) {
         selectedIndexes.push(i);
       }
@@ -18,8 +17,8 @@ const CardPile = ({ pile, pileIndex, selectedCards, onSelectCards }) => {
     onSelectCards(pileIndex, selectedIndexes);
   };
 
-  // Clear selection when clicking the pile background
-  const handlePileClick = () => {
+  const handlePileClick = (e) => {
+    e.stopPropagation();
     onSelectCards(pileIndex, []);
   };
 
@@ -27,7 +26,7 @@ const CardPile = ({ pile, pileIndex, selectedCards, onSelectCards }) => {
     <div 
       ref={setNodeRef}
       onClick={handlePileClick}
-      className={`pile relative w-[120px] mx-2 ${isOver ? ' rounded-lg' : ''}`}
+      className={`pile relative w-[120px] mx-2 ${isOver ? ' bg-opacity-50 rounded-md' : ''}`}
       style={{
         minHeight: `${180 + (pile.length - 1) * 30}px`,
       }}
@@ -43,6 +42,7 @@ const CardPile = ({ pile, pileIndex, selectedCards, onSelectCards }) => {
             zIndex: cardIndex,
           }}
           isSelected={selectedCards.includes(cardIndex)}
+          isDragging={isDraggingPile && selectedCards.includes(cardIndex)}
           onSelect={handleCardSelect}
         />
       ))}

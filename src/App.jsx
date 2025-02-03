@@ -6,7 +6,6 @@ import {DndContext} from '@dnd-kit/core'
 const App = () => {
   return (
     <div>
-      <NavBar/>
       <Cards/>
     </div>
   )
