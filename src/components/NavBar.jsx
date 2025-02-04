@@ -24,7 +24,7 @@ const NavBar = ({ moves, correctMoves, resetGame }) => {
   }, [moves]);
 
   useEffect(() => {
-    setScore(correctMoves * 5);
+    setScore(correctMoves * 1);
   }, [correctMoves]);
 
   const handleReset = () => {
@@ -39,7 +39,7 @@ const NavBar = ({ moves, correctMoves, resetGame }) => {
       <div className="text-xl font-bold">SPIDER SOLITAIRE</div>
       <div className="flex space-x-6 items-center">
         <div className="text-xl"> Time: {timer}s</div>
-        <div className="text-xl"> Score: {score}</div>
+        <div className="text-xl"> Moves: {score}</div>
         <button
           onClick={handleReset}
           className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700 transition duration-300 cursor-pointer"

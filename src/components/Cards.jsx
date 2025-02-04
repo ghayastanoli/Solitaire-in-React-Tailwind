@@ -29,7 +29,7 @@ const Cards = () => {
     const toPile = piles[toPileIndex];
     const firstCard = fromPile[selectedIndexes[0]];
 
-    if (toPile.length === 0 && firstCard.rankValue === 14) {  // King can go to an empty pile
+    if (toPile.length === 0) {
       return true;
     }
 
@@ -44,19 +44,42 @@ const Cards = () => {
 
   // Function to check if a pile is complete (Ace to King in descending order)
   const isPileComplete = (pile) => {
-    if (pile.length !== 13) return false;
+    if (pile.length < 13) return false;
 
-    for (let i = 0; i < pile.length - 1; i++) {
-      const currentCard = pile[i];
-      const nextCard = pile[i + 1];
+    let foundSequence = false;
+    let i = 0;
 
-      if (currentCard.rankValue !== nextCard.rankValue + 1) {
-        return false;  // Cards should be in descending order
-      }
+    while (i <= pile.length - 13) {
+        let isSequenceComplete = true;
+
+        for (let j = 0; j < 12; j++) {
+            const currentCard = pile[i + j];
+            const nextCard = pile[i + j + 1];
+
+            if (currentCard.rankValue !== nextCard.rankValue + 1) {
+                isSequenceComplete = false;
+                break;
+            }
+        }
+
+        if (isSequenceComplete) {
+            pile.splice(i, 13); // Remove only the sequence
+
+            // Reveal the topmost remaining card (if face-down)
+            if (i < pile.length && pile[i].isFaceDown) {
+                pile[i].isFaceDown = false;
+            }
+
+            foundSequence = true;
+            continue; // Stay at the same index after removing elements
+        }
+
+        i++; // Only move forward if no sequence was found
     }
 
-    return true;
-  };
+    return foundSequence;
+};
+
 
   // Function to handle the drag start event
   const handleDragStart = (event) => {
